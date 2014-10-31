@@ -1,9 +1,16 @@
 from os import walk
 import os.path
 
-def inning_files(root):
+#import the C implementation of ElementTree for speed
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
+
+
+def inning_files(root_dir):
     """
-    @param root: the directory to scan for inning.xml files
+    @param root_dir: the directory to scan for inning.xml files
     @return: a list of path names of all the inning.xml files
     """
 
@@ -11,7 +18,7 @@ def inning_files(root):
     inning_file_list = []
 
     #traverse all the files in the directory
-    for path, subdirs, files in walk(root):
+    for path, subdirs, files in walk(root_dir):
         for name in files:
             #add the inning files to the return variable
             if name.endswith('inning.xml'):
@@ -19,6 +26,18 @@ def inning_files(root):
 
     return inning_file_list
 
+def get_pitches(inning_file_path):
+    """
+    @param inning_file_path: the pathname of the inning.xml file
+    @return: a list of the pitch elements
+    """
+    tree = ET.ElementTree(file=inning_file_path)
+    return tree.iter(tag='pitch')
+
+#main method
 if __name__ == "__main__":
     root = 'data/'
-    print inning_files(root)
+    inning_file = inning_files(root)[0]
+    pitches = get_pitches(inning_file)
+    for pitch in pitches:
+        print pitch.attrib
