@@ -6,10 +6,11 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
+
 def get_at_bats(root_dir):
     """
     @param root_dir: the directory to scan for inning.xml files
-    @return: a list of path names of all the inning.xml files
+    @return: a list containing all at-bat elements in the inning.xml files in the folder
     """
 
     #initialize the return variable
@@ -32,10 +33,9 @@ def get_at_bats(root_dir):
 
                 #if we are able to parse an inning file, iterate over it adding all at-bats to the return variable
                 try:
-                    inning_file_tree = ET.ElementTree(file=inning_file_path)
-                    at_bat_trees_iterator = inning_file_tree.iter(tag='atbat')
-
-                    for at_bat in at_bat_trees_iterator:
+                    inning_file_root = ET.ElementTree(file=inning_file_path).getroot()
+                    at_bat_iterator = inning_file_root.iter('atbat')
+                    for at_bat in at_bat_iterator:
                         at_bats.append(at_bat)
 
                 except ET.ParseError:
@@ -45,3 +45,28 @@ def get_at_bats(root_dir):
     os.chdir(cwd)
 
     return at_bats
+
+
+def final_three_pitches(at_bat):
+    """
+    @param at_bat: the at-bat to examine
+    @return: a list containing the final three pitches of the at-bat, if the at bat was at least three pitches long
+    """
+
+    #get all the pitches in an at-bat sequence
+    pitches = list(at_bat.iter('pitch'))
+
+    if (len(pitches) >= 3):
+        return pitches[len(pitches) - 3:]
+
+
+def get_dict_entry(three_pitch_sequence):
+    """
+    @param three_pitch_sequence: a list object of a final three pitch sequence
+    @return: a three element list of pitch_type strings
+    """
+
+    dict_entry = [None] * len(three_pitch_sequence)
+    for i in range(0, len(three_pitch_sequence)):
+        dict_entry[i] = three_pitch_sequence[i].get('pitch_type')
+    return dict_entry
