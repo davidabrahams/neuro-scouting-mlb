@@ -1,4 +1,5 @@
-from data_reader import get_at_bats, final_three_pitches, get_dict_key, process_at_bat
+from data_reader import get_at_bats
+from data_processor import process_at_bat
 
 #main method
 if __name__ == "__main__":
