@@ -1,12 +1,14 @@
 from data_reader import get_at_bats
 from data_processor import process_at_bats
+from data_visualizer import visualize_results
+
 
 def interact_with_user():
     print "-----------------------------------------------------"
     print "| End of At Bat Pitch Pattern Results Visualization |"
     print "-----------------------------------------------------"
     print ""
-    print "This program will show you a results breakdown of a given end-of-at-bat pitch sequence over the course of a season"
+    print "This program will show you a results breakdown of a an end-of-at-bat pitch sequence over the course of a season"
     print ""
     root_folder = raw_input("What is the name of the folder containing the PITCHf/x data? >> ")
     print "parsing through directory..."
@@ -25,6 +27,4 @@ def interact_with_user():
     pitch2 = raw_input("Second pitch in the three pitch sequence >> ")
     pitch3 = raw_input("Third pitch in the three pitch sequence >> ")
     user_input_key = (pitch1, pitch2, pitch3)
-    user_input_results = results_dict[user_input_key]
-    print user_input_results
-
+    visualize_results(user_input_key, results_dict)
