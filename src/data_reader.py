@@ -20,8 +20,6 @@ def get_at_bats(root_dir):
     cwd = os.getcwd()
     os.chdir(os.path.pardir)
 
-    print "parsing through root directory..."
-
     #traverse all the files and subdirectories in the directory
     for path, subdirs, files in os.walk(root_dir):
 
@@ -41,11 +39,9 @@ def get_at_bats(root_dir):
                         at_bats.append(at_bat)
 
                 except ET.ParseError:
-                    print "An error occurred when parsing " + inning_file_path
+                    print "an error occurred when parsing " + inning_file_path
 
     #change back to the original working directory
     os.chdir(cwd)
-
-    print str(len(at_bats)) + " at_bats found."
 
     return at_bats

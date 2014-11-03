@@ -79,31 +79,33 @@ def get_at_bat_result(at_bat):
         print "An error occurred when processing the at bat result: ", at_bat_result
 
 
-def process_at_bat(at_bat, sequence_results_dict):
+def process_at_bats(at_bats, sequence_results_dict):
     """
-    @param at_bat: the at-bat to add into the sequence results dictionary
+    @param at_bats: a list of at-bats to add into the sequence results dictionary
     @param sequence_results_dict: a dict mapping from the final three pitch sequence of an at-bat to the results breakdown of that sequence
     """
 
-    final_pitches = final_three_pitches(at_bat) #extract the final pitch sequence
-    at_bat_result = get_at_bat_result(at_bat) #extract the result from the at_bat
+    for at_bat in at_bats:
 
-    #check to make sure there was a final three pitch sequence
-    if final_pitches is not None:
+        final_pitches = final_three_pitches(at_bat) #extract the final pitch sequence
+        at_bat_result = get_at_bat_result(at_bat) #extract the result from the at_bat
 
-        #get the dictionary key that corresponds to the three pitch sequence
-        at_bat_key = get_dict_key(final_pitches)
+        #check to make sure there was a final three pitch sequence
+        if final_pitches is not None:
 
-        #only process at_bats where the final pitch sequence contained fastballs, curveballs and sliders
-        if None not in at_bat_key:
+            #get the dictionary key that corresponds to the three pitch sequence
+            at_bat_key = get_dict_key(final_pitches)
 
-            #if there is no key in the dict corresponding to this at_bat, make a new key
-            if at_bat_key not in sequence_results_dict:
-                sequence_results_dict[at_bat_key] = {'Hit': 0, 'Hit (out)': 0, 'Strikeout': 0, 'Walk': 0}
+            #only process at_bats where the final pitch sequence contained fastballs, curveballs and sliders
+            if None not in at_bat_key:
 
-            results_breakdown_dict = sequence_results_dict[at_bat_key] #get the dictionary that hold the results counts for that particular pitch sequence
+                #if there is no key in the dict corresponding to this at_bat, make a new key
+                if at_bat_key not in sequence_results_dict:
+                    sequence_results_dict[at_bat_key] = {'Hit': 0, 'Hit (out)': 0, 'Strikeout': 0, 'Walk': 0}
 
-            #If the result was either a Hit, Hit (out), Strikeout, or Walk, increment the count for that result
-            if at_bat_result is not None:
-                results_breakdown_dict[at_bat_result] += 1
+                results_breakdown_dict = sequence_results_dict[at_bat_key] #get the dictionary that hold the results counts for that particular pitch sequence
+
+                #If the result was either a Hit, Hit (out), Strikeout, or Walk, increment the count for that result
+                if at_bat_result is not None:
+                    results_breakdown_dict[at_bat_result] += 1
 
