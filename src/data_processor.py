@@ -24,8 +24,9 @@ def get_dict_key(three_pitch_sequence):
     #loop over the three pitch sequence
     for i in range(0, len(three_pitch_sequence)):
         pitch_type = three_pitch_sequence[i].get('pitch_type') #extract the pitch type
-        processed_type = process_pitch_type(pitch_type) #convert it to either 'FA', 'CU', 'SL', or None
+        processed_type = process_pitch_type(pitch_type) #convert it to either 'FA', 'CU', 'SL', 'CH', or None
         dict_entry[i] = processed_type #place the converted pitch type in the return variable
+
 
     return tuple(dict_entry)
 
@@ -37,8 +38,9 @@ def process_pitch_type(pitch_type):
     """
 
     fastballs = ['FT', 'FF', 'FA', 'FS']
-    curveballs = ['CU', 'CB']
+    curveballs = ['CU', 'CB', 'KC']
     sliders = ['SL']
+    changeups = ['CH']
 
     if pitch_type in fastballs:
         return 'FA'
@@ -46,6 +48,8 @@ def process_pitch_type(pitch_type):
         return 'CU'
     elif pitch_type in sliders:
         return 'SL'
+    elif pitch_type in changeups:
+        return 'CH'
     else:
         return None
 
@@ -96,14 +100,14 @@ def process_at_bats(at_bats, sequence_results_dict):
             #get the dictionary key that corresponds to the three pitch sequence
             at_bat_key = get_dict_key(final_pitches)
 
-            #only process at_bats where the final pitch sequence contained fastballs, curveballs and sliders
+            #only process at_bats where the final pitch sequence contained fastballs, curveballs, changeups, and sliders
             if None not in at_bat_key:
 
                 #if there is no key in the dict corresponding to this at_bat, make a new key
                 if at_bat_key not in sequence_results_dict:
                     sequence_results_dict[at_bat_key] = {'Hit': 0, 'Hit (out)': 0, 'Strikeout': 0, 'Walk': 0}
 
-                results_breakdown_dict = sequence_results_dict[at_bat_key] #get the dictionary that hold the results counts for that particular pitch sequence
+                results_breakdown_dict = sequence_results_dict[at_bat_key] # get the dictionary that hold the results counts for that particular pitch sequence
 
                 #If the result was either a Hit, Hit (out), Strikeout, or Walk, increment the count for that result
                 if at_bat_result is not None:
