@@ -79,7 +79,9 @@ def get_at_bat_result(at_bat):
         return 'Strikeout'
     elif at_bat_result in walk:
         return 'Walk'
-    elif at_bat_result not in others:
+    elif at_bat_result in others:
+        return 'Other'
+    else:
         print "An error occurred when processing the at bat result: ", at_bat_result
 
 
@@ -105,7 +107,7 @@ def process_at_bats(at_bats, sequence_results_dict):
 
                 #if there is no key in the dict corresponding to this at_bat, make a new key
                 if at_bat_key not in sequence_results_dict:
-                    sequence_results_dict[at_bat_key] = {'Hit': 0, 'Hit (out)': 0, 'Strikeout': 0, 'Walk': 0}
+                    sequence_results_dict[at_bat_key] = {'Hit': 0, 'Hit (out)': 0, 'Strikeout': 0, 'Walk': 0, 'Other': 0}
 
                 results_breakdown_dict = sequence_results_dict[at_bat_key] # get the dictionary that hold the results counts for that particular pitch sequence
 
