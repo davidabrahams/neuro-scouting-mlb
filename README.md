@@ -33,3 +33,11 @@ matplotlib
 6. The script displays the result counts in a bar graph.
 
 - Code organization -
+executable.py: contains the main method for the program, calls interact_with_user() in the user_interactions.py module
+user_interactions.py: the program’s ‘Controller’, contains all user interactions and inputs
+data_visualizer.py: the program’s ‘View’, displays pitch results to the user using the matplotlib library
+data_reader.py: loads data from a directory into the program
+data_processor.py: the program’s ‘Model’, takes the data loaded from data_reader.py and manipulates it into a dictionary that maps from an end-of-at-bat pitch sequence to result counts of that sequence.
+
+- Optimizations -
+Rather than taking in a three-pitch user input and then parsing through the all the data looking for at-bats ending in those three pitches, the program parses through all the data once at the beginning and creates a dictionary that maps from three pitch sequences to result counts. That way, when the user inputs three pitches, the program simply gets the value associated with the three pitch key in the stored dictionary.
